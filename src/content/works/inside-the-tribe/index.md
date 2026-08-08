@@ -5,7 +5,7 @@ type: performance
 format: "8.1.4"
 duration: "8:00"
 venue: "Sonic Provocations, Sonified III, Arter, Istanbul"
-summary: "An eight-minute immersive piece for 8.1.4 spatial audio, built from field recordings made inside a forest — bark, substrate and standing water listened to at close range."
+summary: "A metaphysical war between ancient microorganisms and the Homo sapiens faith system, composed into an immersive surround sonic image from generative acousmatic sound transformers."
 featured: true
 status: published
 order: 1
@@ -15,22 +15,21 @@ credits: []
 links: {}
 ---
 
-_Inside the Tribe_ is assembled entirely from recordings made in the forest itself,
-not in a studio. Microphones were pressed into bark, strapped to standing trunks,
-laid on moss above a river gorge and held over still water — each position a
-different way of getting close enough to hear what the place is doing when nobody is
-listening to it.
+Life flourished through endless chains of reactions. Over time, these reactions
+evolved into complex structures of ever-changing information generators — fanatical
+disciples of the grand doctrine of Entropy. Across various phases of structural
+entropy as accelerators, different species clashed in wars and conflicts over
+existence, dominance, and survival.
 
-At that range the forest stops being an ambience. What arrives is friction and
-resonance: movement inside the wood, the substrate carrying vibration between one
-body and another, the slow acoustic behaviour of a trunk treated as a chamber. These
-are events at a scale below ordinary attention, and they only become material once
-they are amplified and given room.
+_Inside the Tribe_ depicts a metaphysical war between ancient microorganisms and the
+Homo sapiens faith system. It employs generative acousmatic sound transformers based
+on sound objects, specifically prepared and composed into an immersive octophonic
+(8-channel surround speaker array) sonic image. These transformers are generative
+patches created for this performance — an artificial life form that evolves in real
+time.
 
-Diffused across an 8.1.4 array, that material is scaled up until the listener's
-relationship to it inverts. What is inaudible at human scale becomes architectural.
-The four height channels close the space overhead, so the audience is not observing
-the forest but standing inside its structure.
+And remember: Entropy reigns not only in nature and space/time but accelerates wildly
+within virtual worlds built upon circuits.
 
 ## Notes
 
