@@ -4,14 +4,15 @@
 @import '@fontsource/courier-prime/700.css';
 
 :root {
-  /* Ported from the previous site, warmed slightly for contrast */
-  --bg: #060504;
-  --bg-raised: #0d0b09;
-  --ink: #dedad2;
-  --dim: #7d7669;
-  --gold: #b89448;
-  --gold-soft: rgba(184, 148, 72, 0.5);
-  --bdr: rgba(184, 148, 72, 0.14);
+  /* Sampled from the forest photograph used as the site background:
+     deep treeline #0c1010, olive meadow #3d3e27, pale overcast sky #b6bac3. */
+  --bg: #1a221e;
+  --bg-raised: #232c27;
+  --ink: #e4e7e4;
+  --dim: #a3aaa4;
+  --accent: #bccfb6;
+  --accent-soft: rgba(188, 207, 182, 0.55);
+  --bdr: rgba(188, 207, 182, 0.16);
 
   --font-display: 'Cormorant Garamond Variable', Georgia, serif;
   --font-body: 'Newsreader Variable', Georgia, serif;
@@ -72,7 +73,7 @@ h3 {
   font-size: 0.72rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 p {
@@ -81,17 +82,17 @@ p {
 
 a {
   color: inherit;
-  text-decoration-color: var(--gold-soft);
+  text-decoration-color: var(--accent-soft);
   text-underline-offset: 0.25em;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--gold);
+  color: var(--accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -118,7 +119,7 @@ a:hover {
   font-size: 0.68rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .prose p + p {

@@ -1,34 +1,74 @@
 ---
 /**
- * Perlin flow-field background, ported from the previous site.
- * Changes: sits behind content (scrolling works), particle count scales to
- * viewport, pauses when the tab is hidden, and is skipped entirely for
- * prefers-reduced-motion.
+ * Layered background: forest photograph, Perlin flow field over it, then a
+ * scrim that keeps text legible. All three sit behind content and never
+ * intercept pointer events.
+ *
+ * `still` drops the animated field and fades the photograph back further —
+ * used on reading-heavy pages so the atmosphere carries through without
+ * competing with long passages of text.
  */
+interface Props {
+  still?: boolean;
+}
+const { still = false } = Astro.props;
 ---
 
-<canvas id="flowfield" aria-hidden="true"></canvas>
+<div class:list={['bg-photo', { still }]} aria-hidden="true"></div>
+{!still && <canvas id="flowfield" aria-hidden="true"></canvas>}
+<div class:list={['bg-scrim', { still }]} aria-hidden="true"></div>
 
 <style>
+  .bg-photo,
+  .bg-scrim,
   #flowfield {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
     pointer-events: none;
+  }
+
+  .bg-photo {
+    z-index: -3;
+    background-image: image-set(url('/bg-forest.webp') type('image/webp'), url('/bg-forest.jpg'));
+    background-size: cover;
+    background-position: center 28%;
+    /* Desaturated and lifted toward the palette so it reads as atmosphere
+       rather than a photograph competing with the text. */
+    filter: saturate(0.4) brightness(1.05) contrast(0.78);
+    opacity: 0.62;
+  }
+  .bg-photo.still {
+    opacity: 0.2;
+    filter: saturate(0.3) brightness(0.95) contrast(0.7) blur(2px);
+  }
+
+  #flowfield {
+    z-index: -2;
     opacity: 0;
     transition: opacity 2.5s ease;
   }
   #flowfield.on {
     opacity: 1;
   }
+
+  /* Deepens the edges and floor so long passages of text stay readable. */
+  .bg-scrim {
+    z-index: -1;
+    background:
+      radial-gradient(125% 90% at 50% 28%, rgba(30, 38, 34, 0.05) 0%, rgba(24, 31, 27, 0.55) 100%),
+      linear-gradient(to bottom, rgba(24, 31, 27, 0.4) 0%, rgba(24, 31, 27, 0.28) 40%, rgba(20, 26, 23, 0.72) 100%);
+  }
+  .bg-scrim.still {
+    background: linear-gradient(to bottom, rgba(26, 34, 30, 0.5) 0%, rgba(26, 34, 30, 0.72) 100%);
+  }
 </style>
 
 <script>
   const cv = document.getElementById('flowfield') as HTMLCanvasElement | null;
   if (cv && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const ctx = cv.getContext('2d', { alpha: false })!;
+    const ctx = cv.getContext('2d', { alpha: true })!;
     const CELL = 24;
     const TAU = Math.PI * 2;
 
@@ -77,15 +117,22 @@
       cols = Math.ceil(W / CELL) + 2;
       rows = Math.ceil(H / CELL) + 2;
       field = new Float32Array(cols * rows);
-      ctx.fillStyle = '#060504';
-      ctx.fillRect(0, 0, W, H);
+      ctx.clearRect(0, 0, W, H);
     }
 
-    // Gold palette, biased dark so text stays legible on top.
+    /* Three tones lifted from the photograph: pale overcast sky, sage, and a
+       soft olive drawn from the meadow. Pastel rather than saturated, so the
+       field reads as mist rather than sparks. */
+    const TONES: [number, number, number][] = [
+      [198, 208, 214], // sky
+      [178, 198, 172], // sage
+      [140, 150, 118], // meadow
+    ];
     const PAL: [number, number, number][] = [];
     for (let i = 0; i < 512; i++) {
-      const t = Math.pow(Math.random(), 1.9);
-      PAL.push([(120 + t * 110) | 0, (78 + t * 110) | 0, (14 + t * 95) | 0]);
+      const base = TONES[(Math.random() * TONES.length) | 0];
+      const t = 0.72 + Math.random() * 0.28;
+      PAL.push([(base[0] * t) | 0, (base[1] * t) | 0, (base[2] * t) | 0]);
     }
 
     class Particle {
@@ -122,7 +169,7 @@
       draw() {
         const a = Math.sin(this.age * Math.PI);
         if (a < 0.01) return;
-        ctx.globalAlpha = a * 0.4;
+        ctx.globalAlpha = a * 0.34;
         ctx.fillStyle = `rgb(${this.r},${this.g},${this.b})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.sz, 0, TAU);
@@ -149,9 +196,13 @@
           field[y * cols + x] = noise(x * 0.055, y * 0.055 + t) * Math.PI * 2.2;
         }
       }
+      /* Fade previous frames by erasing rather than painting over, so the
+         photograph beneath stays visible instead of being covered up. */
+      ctx.globalCompositeOperation = 'destination-out';
       ctx.globalAlpha = 1;
-      ctx.fillStyle = 'rgba(6,5,4,0.055)';
+      ctx.fillStyle = 'rgba(0,0,0,0.055)';
       ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
       for (const p of particles) { p.step(); p.draw(); }
       raf = requestAnimationFrame(frame);
     }

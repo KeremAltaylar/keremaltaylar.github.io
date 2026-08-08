@@ -50,13 +50,13 @@ const path = Astro.url.pathname;
   </head>
 
   <body>
-    {!quiet && <FlowField />}
+    <FlowField still={quiet} />
 
     <a href="#main" class="skip">Skip to content</a>
 
     <header class="site-head">
       <div class="wrap head-inner">
-        <a href="/" class="logo">Kerem <b>Altaylar</b></a>
+        <a href="/" class="logo">Kerem Altaylar</a>
         <nav aria-label="Primary">
           <ul>
             {NAV.map((item) => (
@@ -95,7 +95,7 @@ const path = Astro.url.pathname;
         position: absolute;
         left: -9999px;
         top: 0;
-        background: var(--gold);
+        background: var(--accent);
         color: #060504;
         padding: 0.6rem 1rem;
         z-index: 999;
@@ -126,12 +126,8 @@ const path = Astro.url.pathname;
         font-size: 0.7rem;
         letter-spacing: 0.28em;
         text-transform: uppercase;
-        color: var(--dim);
+        color: var(--ink);
         text-decoration: none;
-      }
-      .logo b {
-        color: var(--gold);
-        font-weight: 400;
       }
 
       nav ul {
@@ -157,7 +153,7 @@ const path = Astro.url.pathname;
         bottom: 0.15rem;
         width: 0;
         height: 1px;
-        background: var(--gold);
+        background: var(--accent);
         transition: width 0.4s var(--ease);
       }
       nav a:hover,
@@ -208,7 +204,7 @@ const path = Astro.url.pathname;
         text-decoration: none;
       }
       .foot-links a:hover {
-        color: var(--gold);
+        color: var(--accent);
       }
     </style>
   </body>

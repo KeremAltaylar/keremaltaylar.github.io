@@ -22,17 +22,6 @@
     "featured": true
   },
   {
-    "id": "polysynth-vmi-000",
-    "kind": "instrument",
-    "title": "PolySynth VMI-000",
-    "blurb": "Polyphonic virtual musical instrument. First in the VMI series.",
-    "url": "https://keremaltaylar.github.io/PolySynth-VMI-000/",
-    "repo": "https://github.com/KeremAltaylar/PolySynth-VMI-000",
-    "tech": ["Web Audio", "JavaScript"],
-    "year": 2025,
-    "featured": true
-  },
-  {
     "id": "monosynth-vmi-002",
     "kind": "instrument",
     "title": "MonoSynth VMI-002",

@@ -9,13 +9,11 @@ export const SITE = {
     { label: 'Bandcamp', href: 'https://keremaltaylar.bandcamp.com' },
     { label: 'Instagram', href: 'https://instagram.com/keremaltaylar' },
     { label: 'GitHub', href: 'https://github.com/KeremAltaylar' },
-    { label: 'SoundCloud', href: 'https://soundcloud.com/kerem-altaylar' },
   ],
   sameAs: [
     'https://keremaltaylar.bandcamp.com',
     'https://instagram.com/keremaltaylar',
     'https://github.com/KeremAltaylar',
-    'https://soundcloud.com/kerem-altaylar',
     'https://www.fxhash.xyz/u/Kerem%20Altaylar',
   ],
 } as const;

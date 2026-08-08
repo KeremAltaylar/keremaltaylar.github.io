@@ -2,7 +2,7 @@
 title: "Microsoundscapes and The Colony"
 year: 2025
 type: research
-format: "Live electronics, custom contact-mic formicarium"
+format: "Quadraphonic"
 venue: "Hochschule für Musik, Hannover"
 summary: "A DIY formicarium fitted with contact microphones, used as both research instrument and performance system for listening at the threshold of audibility."
 featured: true
