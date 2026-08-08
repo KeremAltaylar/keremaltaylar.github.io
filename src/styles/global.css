@@ -9,7 +9,9 @@
   --bg: #1a221e;
   --bg-raised: #232c27;
   --ink: #e4e7e4;
-  --dim: #a3aaa4;
+  /* Lifted from #a3aaa4: small monospace metadata has to hold up against the
+     bright sky in the background photograph. */
+  --dim: #b4bab4;
   --accent: #bccfb6;
   --accent-soft: rgba(188, 207, 182, 0.55);
   --bdr: rgba(188, 207, 182, 0.16);
