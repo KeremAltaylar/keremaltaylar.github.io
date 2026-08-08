@@ -1,0 +1,78 @@
+[
+  {
+    "id": "maqamsynth",
+    "kind": "instrument",
+    "title": "MaqamSynth",
+    "blurb": "Microtonal synthesis engine built around maqam tuning systems, playable in the browser.",
+    "url": "https://keremaltaylar.github.io/MaqamSynth/",
+    "repo": "https://github.com/KeremAltaylar/MaqamSynth",
+    "tech": ["Web Audio", "JavaScript", "Microtonality"],
+    "year": 2025,
+    "featured": true
+  },
+  {
+    "id": "hand-gesture-sonification",
+    "kind": "instrument",
+    "title": "Hand Gesture Sonification",
+    "blurb": "Computer vision maps hand position and gesture to sound. Needs a webcam.",
+    "url": "https://keremaltaylar.github.io/Hand-Gesture-Sonification/",
+    "repo": "https://github.com/KeremAltaylar/Hand-Gesture-Sonification",
+    "tech": ["Computer Vision", "Web Audio", "JavaScript"],
+    "year": 2023,
+    "featured": true
+  },
+  {
+    "id": "polysynth-vmi-000",
+    "kind": "instrument",
+    "title": "PolySynth VMI-000",
+    "blurb": "Polyphonic virtual musical instrument. First in the VMI series.",
+    "url": "https://keremaltaylar.github.io/PolySynth-VMI-000/",
+    "repo": "https://github.com/KeremAltaylar/PolySynth-VMI-000",
+    "tech": ["Web Audio", "JavaScript"],
+    "year": 2025,
+    "featured": true
+  },
+  {
+    "id": "monosynth-vmi-002",
+    "kind": "instrument",
+    "title": "MonoSynth VMI-002",
+    "blurb": "Monophonic voltage-inspired synthesiser with a hands-on control surface.",
+    "url": "https://keremaltaylar.github.io/MonoSynth-VMI-002/",
+    "repo": "https://github.com/KeremAltaylar/MonoSynth-VMI-002",
+    "tech": ["Web Audio", "JavaScript"],
+    "year": 2023,
+    "featured": false
+  },
+  {
+    "id": "drummachine-vmi-001",
+    "kind": "instrument",
+    "title": "DrumMachine VMI-001",
+    "blurb": "Step sequencer and rhythmic interface for pattern-based improvisation.",
+    "url": "https://keremaltaylar.github.io/DrumMachine-VMI-001/",
+    "repo": "https://github.com/KeremAltaylar/DrumMachine-VMI-001",
+    "tech": ["Web Audio", "JavaScript", "Sequencing"],
+    "year": 2023,
+    "featured": false
+  },
+
+  { "id": "aelith", "kind": "generative", "title": "Aelith", "url": "https://keremaltaylar.github.io/Aelith/", "repo": "https://github.com/KeremAltaylar/Aelith", "tech": ["p5.js"], "year": 2026 },
+  { "id": "animae", "kind": "generative", "title": "Animae", "url": "https://keremaltaylar.github.io/Animae/", "repo": "https://github.com/KeremAltaylar/Animae", "tech": ["p5.js"], "year": 2026 },
+  { "id": "blood-cells", "kind": "generative", "title": "Blood Cells", "url": "https://keremaltaylar.github.io/Blood-Cells/", "repo": "https://github.com/KeremAltaylar/Blood-Cells", "tech": ["p5.js"], "year": 2026 },
+  { "id": "colletha", "kind": "generative", "title": "Colletha", "url": "https://keremaltaylar.github.io/Colletha/", "repo": "https://github.com/KeremAltaylar/Colletha", "tech": ["p5.js"], "year": 2026 },
+  { "id": "dasein", "kind": "generative", "title": "Dasein", "url": "https://keremaltaylar.github.io/Dasein/", "repo": "https://github.com/KeremAltaylar/Dasein", "tech": ["p5.js"], "year": 2026 },
+  { "id": "ditto", "kind": "generative", "title": "Ditto", "url": "https://keremaltaylar.github.io/Ditto/", "repo": "https://github.com/KeremAltaylar/Ditto", "tech": ["p5.js"], "year": 2026 },
+  { "id": "dorian", "kind": "generative", "title": "Dorian", "url": "https://keremaltaylar.github.io/Dorian/", "repo": "https://github.com/KeremAltaylar/Dorian", "tech": ["p5.js"], "year": 2026 },
+  { "id": "elendil", "kind": "generative", "title": "Elendil", "url": "https://keremaltaylar.github.io/Elendil/", "repo": "https://github.com/KeremAltaylar/Elendil", "tech": ["p5.js"], "year": 2026 },
+  { "id": "gazzanis", "kind": "generative", "title": "Gazzanis", "url": "https://keremaltaylar.github.io/Gazzanis/", "repo": "https://github.com/KeremAltaylar/Gazzanis", "tech": ["p5.js"], "year": 2026 },
+  { "id": "ishtar", "kind": "generative", "title": "Ishtar", "url": "https://keremaltaylar.github.io/Ishtar/", "repo": "https://github.com/KeremAltaylar/Ishtar", "tech": ["p5.js"], "year": 2026 },
+  { "id": "ratahamatta", "kind": "generative", "title": "Ratahamatta", "url": "https://keremaltaylar.github.io/Ratahamatta/", "repo": "https://github.com/KeremAltaylar/Ratahamatta", "tech": ["p5.js"], "year": 2026 },
+  { "id": "shinigami-i", "kind": "generative", "title": "Shinigami I", "url": "https://keremaltaylar.github.io/Shinigami-I/", "repo": "https://github.com/KeremAltaylar/Shinigami-I", "tech": ["p5.js"], "year": 2026 },
+  { "id": "shinigami-ii", "kind": "generative", "title": "Shinigami II", "url": "https://keremaltaylar.github.io/Shinigami-II/", "repo": "https://github.com/KeremAltaylar/Shinigami-II", "tech": ["p5.js"], "year": 2026 },
+  { "id": "shinigami-iii", "kind": "generative", "title": "Shinigami III", "url": "https://keremaltaylar.github.io/Shinigami-III/", "repo": "https://github.com/KeremAltaylar/Shinigami-III", "tech": ["p5.js"], "year": 2026 },
+  { "id": "sophisto", "kind": "generative", "title": "Sophisto", "url": "https://keremaltaylar.github.io/Sophisto/", "repo": "https://github.com/KeremAltaylar/Sophisto", "tech": ["p5.js"], "year": 2026 },
+  { "id": "sutra-i", "kind": "generative", "title": "Sutra I", "url": "https://keremaltaylar.github.io/Sutra-I/", "repo": "https://github.com/KeremAltaylar/Sutra-I", "tech": ["p5.js"], "year": 2026 },
+  { "id": "sutra-ii", "kind": "generative", "title": "Sutra II", "url": "https://keremaltaylar.github.io/Sutra-II/", "repo": "https://github.com/KeremAltaylar/Sutra-II", "tech": ["p5.js"], "year": 2026 },
+  { "id": "sutra-iii", "kind": "generative", "title": "Sutra III", "url": "https://keremaltaylar.github.io/Sutra-III/", "repo": "https://github.com/KeremAltaylar/Sutra-III", "tech": ["p5.js"], "year": 2026 },
+  { "id": "sutra-iv", "kind": "generative", "title": "Sutra IV", "url": "https://keremaltaylar.github.io/Sutra-IV/", "repo": "https://github.com/KeremAltaylar/Sutra-IV", "tech": ["p5.js"], "year": 2026 },
+  { "id": "xibalba", "kind": "generative", "title": "Xibalba", "url": "https://keremaltaylar.github.io/Xibalba/", "repo": "https://github.com/KeremAltaylar/Xibalba", "tech": ["p5.js"], "year": 2026 }
+]

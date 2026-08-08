@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const notes = (await getCollection('field', ({ data }) => data.status === 'published')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+---
+
+<Base
+  title="Field Log"
+  description="Short notes from the field — recordings, listening sessions, performances and works in progress."
+  quiet
+>
+  <div class="wrap">
+    <header class="page-head rise">
+      <p class="eyebrow">Field Log</p>
+      <h1>Notes from the field</h1>
+      <p class="lede">
+        Short entries — recordings, listening sessions, performances and things
+        still in progress.
+      </p>
+    </header>
+
+    {
+      notes.length > 0 ? (
+        <ul class="notes">
+          {notes.map((n) => (
+            <li>
+              <a href={`/field/${n.id}/`}>
+                <span class="meta">
+                  {fmt(n.data.date)}
+                  {n.data.place && ` · ${n.data.place}`}
+                </span>
+                <span class="n-title">{n.data.title}</span>
+                {n.data.summary && <span class="n-sum">{n.data.summary}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty meta">No entries yet.</p>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 44rem;
+  }
+  .page-head h1 {
+    margin-block: 0.6rem 1rem;
+  }
+  .lede {
+    opacity: 0.8;
+  }
+  .notes {
+    list-style: none;
+    border-top: 1px solid var(--bdr);
+  }
+  .notes a {
+    display: grid;
+    gap: 0.3rem;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--bdr);
+    text-decoration: none;
+  }
+  .n-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    transition: color 0.4s ease;
+  }
+  .notes a:hover .n-title {
+    color: var(--gold);
+  }
+  .n-sum {
+    max-width: 60ch;
+    opacity: 0.75;
+    font-size: 0.96rem;
+  }
+  .empty {
+    padding-block: 2rem 6rem;
+  }
+</style>

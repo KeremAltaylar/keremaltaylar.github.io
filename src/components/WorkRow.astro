@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  work: CollectionEntry<'works'>;
+  index: number;
+}
+
+const { work, index } = Astro.props;
+const d = work.data;
+const meta = [d.format, d.duration, String(d.year)].filter(Boolean).join(' · ');
+---
+
+<article class={`row ${index % 2 === 1 ? 'flip' : ''}`}>
+  <a href={`/works/${work.id}/`} class="thumb">
+    {
+      d.cover ? (
+        <Image src={d.cover} alt={d.coverAlt ?? ''} widths={[420, 760, 1100]} sizes="(max-width: 800px) 100vw, 55vw" />
+      ) : (
+        <div class="placeholder" aria-hidden="true">
+          <span class="meta">{d.type}</span>
+        </div>
+      )
+    }
+  </a>
+
+  <div class="body">
+    <p class="meta">{meta}</p>
+    <h2><a href={`/works/${work.id}/`}>{d.title}</a></h2>
+    {d.venue && <p class="venue meta">{d.venue}</p>}
+    <p class="summary">{d.summary}</p>
+    <a href={`/works/${work.id}/`} class="more">Read →</a>
+  </div>
+</article>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-bottom: 1px solid var(--bdr);
+  }
+  .row.flip .thumb {
+    order: 2;
+  }
+
+  .thumb {
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.88) saturate(0.9);
+    transition: filter 0.6s var(--ease), transform 0.8s var(--ease);
+  }
+  .thumb:hover :global(img) {
+    filter: none;
+    transform: scale(1.02);
+  }
+
+  .placeholder {
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--bdr);
+    background: linear-gradient(140deg, rgba(184, 148, 72, 0.05), rgba(184, 148, 72, 0.01));
+  }
+
+  h2 {
+    margin-block: 0.35rem 0.5rem;
+  }
+  h2 a {
+    text-decoration: none;
+  }
+  .venue {
+    margin-bottom: 0.9rem;
+    text-transform: none;
+    letter-spacing: 0.08em;
+  }
+  .summary {
+    color: var(--ink);
+    opacity: 0.85;
+  }
+  .more {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  @media (max-width: 760px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .row.flip .thumb {
+      order: 0;
+    }
+  }
+</style>

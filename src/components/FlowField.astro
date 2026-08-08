@@ -1,0 +1,173 @@
+---
+/**
+ * Perlin flow-field background, ported from the previous site.
+ * Changes: sits behind content (scrolling works), particle count scales to
+ * viewport, pauses when the tab is hidden, and is skipped entirely for
+ * prefers-reduced-motion.
+ */
+---
+
+<canvas id="flowfield" aria-hidden="true"></canvas>
+
+<style>
+  #flowfield {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2.5s ease;
+  }
+  #flowfield.on {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const cv = document.getElementById('flowfield') as HTMLCanvasElement | null;
+  if (cv && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const ctx = cv.getContext('2d', { alpha: false })!;
+    const CELL = 24;
+    const TAU = Math.PI * 2;
+
+    const noise = (() => {
+      const p = [...Array(256).keys()];
+      for (let i = 255; i > 0; i--) {
+        const j = (Math.random() * (i + 1)) | 0;
+        [p[i], p[j]] = [p[j], p[i]];
+      }
+      const P = new Uint8Array(512);
+      for (let i = 0; i < 512; i++) P[i] = p[i & 255];
+      const fade = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+      const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+      const grad = (h: number, x: number, y: number) => {
+        switch (h & 3) {
+          case 0: return x + y;
+          case 1: return -x + y;
+          case 2: return x - y;
+          default: return -x - y;
+        }
+      };
+      return (x: number, y: number) => {
+        const X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+        x -= Math.floor(x); y -= Math.floor(y);
+        const u = fade(x), v = fade(y);
+        const A = P[X] + Y, B = P[X + 1] + Y;
+        return lerp(
+          lerp(grad(P[A], x, y), grad(P[B], x - 1, y), u),
+          lerp(grad(P[A + 1], x, y - 1), grad(P[B + 1], x - 1, y - 1), u),
+          v
+        );
+      };
+    })();
+
+    let W = 0, H = 0, cols = 0, rows = 0;
+    let field = new Float32Array(0);
+    let dpr = 1;
+
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 1.5);
+      W = innerWidth;
+      H = innerHeight;
+      cv!.width = Math.floor(W * dpr);
+      cv!.height = Math.floor(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(W / CELL) + 2;
+      rows = Math.ceil(H / CELL) + 2;
+      field = new Float32Array(cols * rows);
+      ctx.fillStyle = '#060504';
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // Gold palette, biased dark so text stays legible on top.
+    const PAL: [number, number, number][] = [];
+    for (let i = 0; i < 512; i++) {
+      const t = Math.pow(Math.random(), 1.9);
+      PAL.push([(120 + t * 110) | 0, (78 + t * 110) | 0, (14 + t * 95) | 0]);
+    }
+
+    class Particle {
+      x = 0; y = 0; vx = 0; vy = 0;
+      age = 0; rate = 0; spd = 0; sz = 0;
+      r = 0; g = 0; b = 0;
+      constructor() { this.reset(true); }
+      reset(fresh: boolean) {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.age = fresh ? Math.random() : 0;
+        this.rate = 0.0012 + Math.random() * 0.0016;
+        this.spd = 0.22 + Math.random() * 0.85;
+        this.sz = 0.18 + Math.random() * 0.7;
+        const c = PAL[(Math.random() * PAL.length) | 0];
+        [this.r, this.g, this.b] = c;
+      }
+      step() {
+        const gx = Math.min(Math.max((this.x / CELL) | 0, 0), cols - 1);
+        const gy = Math.min(Math.max((this.y / CELL) | 0, 0), rows - 1);
+        const ang = field[gy * cols + gx] || 0;
+        const I = 0.96;
+        this.vx = this.vx * I + Math.cos(ang) * this.spd * (1 - I);
+        this.vy = this.vy * I + Math.sin(ang) * this.spd * (1 - I);
+        this.x += this.vx;
+        this.y += this.vy;
+        this.age += this.rate;
+        if (this.x < -2) this.x = W + 2; else if (this.x > W + 2) this.x = -2;
+        if (this.y < -2) this.y = H + 2; else if (this.y > H + 2) this.y = -2;
+        if (this.age >= 1) this.reset(false);
+      }
+      draw() {
+        const a = Math.sin(this.age * Math.PI);
+        if (a < 0.01) return;
+        ctx.globalAlpha = a * 0.4;
+        ctx.fillStyle = `rgb(${this.r},${this.g},${this.b})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.sz, 0, TAU);
+        ctx.fill();
+      }
+    }
+
+    resize();
+    let particles: Particle[] = [];
+    function seed() {
+      const target = Math.min(3600, Math.round((W * H) / 620));
+      particles = Array.from({ length: target }, () => new Particle());
+    }
+    seed();
+
+    let t = 0;
+    let raf = 0;
+    let running = true;
+
+    function frame() {
+      t += 0.0016;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          field[y * cols + x] = noise(x * 0.055, y * 0.055 + t) * Math.PI * 2.2;
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = 'rgba(6,5,4,0.055)';
+      ctx.fillRect(0, 0, W, H);
+      for (const p of particles) { p.step(); p.draw(); }
+      raf = requestAnimationFrame(frame);
+    }
+
+    let resizeTimer: number;
+    addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => { resize(); seed(); }, 200);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && running) { cancelAnimationFrame(raf); running = false; }
+      else if (!document.hidden && !running) { running = true; frame(); }
+    });
+
+    cv.classList.add('on');
+    frame();
+  }
+</script>

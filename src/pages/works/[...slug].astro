@@ -1,0 +1,186 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works', ({ data }) => data.status === 'published');
+  return works.map((work) => ({ params: { slug: work.id }, props: { work } }));
+}
+
+const { work } = Astro.props;
+const d = work.data;
+const { Content } = await render(work);
+
+const facts = [
+  ['Year', String(d.year)],
+  ['Type', d.type],
+  ['Format', d.format],
+  ['Duration', d.duration],
+  ['Venue', d.venue],
+].filter(([, v]) => Boolean(v)) as [string, string][];
+
+const linkLabels: Record<string, string> = {
+  bandcamp: 'Listen on Bandcamp',
+  youtube: 'Watch on YouTube',
+  soundcloud: 'Listen on SoundCloud',
+  score: 'Score',
+  text: 'Text',
+};
+const links = Object.entries(d.links).filter(([, v]) => Boolean(v)) as [string, string][];
+---
+
+<Base title={d.title} description={d.summary} quiet>
+  <article class="wrap">
+    <header class="work-head rise">
+      <p class="eyebrow">{d.type}</p>
+      <h1>{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+    </header>
+
+    {
+      d.cover && (
+        <figure class="cover">
+          <Image src={d.cover} alt={d.coverAlt ?? ''} widths={[600, 1000, 1600]} sizes="100vw" />
+        </figure>
+      )
+    }
+
+    <div class="grid">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside class="facts">
+        <dl>
+          {
+            facts.map(([k, v]) => (
+              <div>
+                <dt class="meta">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        {
+          d.credits.length > 0 && (
+            <>
+              <h3>Credits</h3>
+              <dl>
+                {d.credits.map((c) => (
+                  <div>
+                    <dt class="meta">{c.role}</dt>
+                    <dd>{c.who}</dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          )
+        }
+
+        {
+          links.length > 0 && (
+            <ul class="links">
+              {links.map(([k, v]) => (
+                <li>
+                  <a href={v} rel="noopener">
+                    {linkLabels[k] ?? k} →
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </aside>
+    </div>
+
+    <p class="back"><a href="/works/">← All works</a></p>
+  </article>
+</Base>
+
+<style>
+  .work-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 46rem;
+  }
+  .work-head h1 {
+    margin-block: 0.6rem 1rem;
+  }
+  .lede {
+    font-size: 1.2rem;
+    color: var(--ink);
+    opacity: 0.82;
+  }
+
+  .cover {
+    margin-bottom: clamp(2rem, 6vw, 4rem);
+  }
+  .cover :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 16rem;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .facts {
+    position: sticky;
+    top: 6rem;
+    border-top: 1px solid var(--bdr);
+    padding-top: 1.2rem;
+  }
+  .facts dl > div {
+    margin-bottom: 1rem;
+  }
+  .facts dd {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--ink);
+    margin-top: 0.2rem;
+  }
+  .facts h3 {
+    margin-block: 2rem 1rem;
+  }
+
+  .links {
+    list-style: none;
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .back {
+    margin-top: clamp(3rem, 8vw, 5rem);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .back a {
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .facts {
+      position: static;
+    }
+  }
+</style>

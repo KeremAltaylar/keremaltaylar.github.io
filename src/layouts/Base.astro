@@ -1,0 +1,215 @@
+---
+import '../styles/global.css';
+import FlowField from '../components/FlowField.astro';
+import { SITE, NAV } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Hide the flow field on text-heavy pages where it competes with reading. */
+  quiet?: boolean;
+}
+
+const { title, description = SITE.description, quiet = false } = Astro.props;
+const pageTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: SITE.name,
+        jobTitle: SITE.role,
+        email: `mailto:${SITE.email}`,
+        url: SITE.url,
+        sameAs: SITE.sameAs,
+      })}
+    />
+  </head>
+
+  <body>
+    {!quiet && <FlowField />}
+
+    <a href="#main" class="skip">Skip to content</a>
+
+    <header class="site-head">
+      <div class="wrap head-inner">
+        <a href="/" class="logo">Kerem <b>Altaylar</b></a>
+        <nav aria-label="Primary">
+          <ul>
+            {NAV.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={path === item.href || (item.href !== '/' && path.startsWith(item.href)) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-foot">
+      <div class="wrap foot-inner">
+        <p class="meta">© {new Date().getFullYear()} {SITE.name} · Istanbul</p>
+        <ul class="foot-links">
+          {SITE.follow.map((l) => (
+            <li><a href={l.href} rel="me noopener">{l.label}</a></li>
+          ))}
+          <li><a href={`mailto:${SITE.email}`}>Email</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--gold);
+        color: #060504;
+        padding: 0.6rem 1rem;
+        z-index: 999;
+      }
+      .skip:focus {
+        left: 0;
+      }
+
+      .site-head {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: rgba(6, 5, 4, 0.72);
+        border-bottom: 1px solid var(--bdr);
+      }
+      .head-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        min-height: 4.25rem;
+        flex-wrap: wrap;
+      }
+      .logo {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--dim);
+        text-decoration: none;
+      }
+      .logo b {
+        color: var(--gold);
+        font-weight: 400;
+      }
+
+      nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: clamp(0.9rem, 2.2vw, 2rem);
+        list-style: none;
+      }
+      nav a {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--dim);
+        text-decoration: none;
+        padding-block: 0.4rem;
+        position: relative;
+      }
+      nav a::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0.15rem;
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        transition: width 0.4s var(--ease);
+      }
+      nav a:hover,
+      nav a[aria-current='page'] {
+        color: var(--ink);
+      }
+      nav a:hover::after,
+      nav a[aria-current='page']::after {
+        width: 100%;
+      }
+
+      /* The nav wraps to two rows on narrow screens; sticking it there would
+         eat too much of a short viewport. */
+      @media (max-width: 560px) {
+        .site-head {
+          position: static;
+        }
+      }
+
+      main {
+        flex: 1;
+      }
+
+      .site-foot {
+        border-top: 1px solid var(--bdr);
+        margin-top: clamp(5rem, 12vw, 9rem);
+        padding-block: 2.5rem;
+      }
+      .foot-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .foot-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.4rem;
+        list-style: none;
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .foot-links a {
+        color: var(--dim);
+        text-decoration: none;
+      }
+      .foot-links a:hover {
+        color: var(--gold);
+      }
+    </style>
+  </body>
+</html>

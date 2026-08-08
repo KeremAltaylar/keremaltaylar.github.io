@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+
+const education = [
+  ['2023–present', 'PhD, Sonic Arts', 'Istanbul Technical University, MIAM'],
+  ['2019–2023', 'MA, Sonic Arts', 'Istanbul Technical University, MIAM'],
+  ['2012–2019', 'BA, History', 'Boğaziçi University'],
+];
+
+const residencies = [['2020–2021', 'Arter Researcher Artist Residency', 'Autonomous Polyphonic Music Generator']];
+
+const performances = [
+  ['2025', 'Inside the Tribe', 'Sonified III, Arter, Istanbul'],
+  ['2025', 'The Colony', 'Hochschule für Musik, Hannover'],
+  ['2024', 'Hammers of the Bruenor', 'Sonified II, Istanbul'],
+  ['2021', 'Decentralisation of Homo Heidelbergensis', 'MIAM Gallery, Istanbul'],
+  ['2021–present', 'Algorave Istanbul', 'Various venues'],
+  ['2020–present', 'Solo live coding', 'Sonar Istanbul, Gazhane'],
+  ['2018–various', 'Y Negative & Pembe', 'Babylon, Gazhane Museum, Blind Istanbul'],
+];
+
+const teaching = [
+  ['2024', 'Low Amplitude Sound Worlds', 'Arter, Sonified'],
+  ['2023', 'Audiovisual Reaction in p5.js', 'Sonar Istanbul'],
+  ['2021', 'Algorithms and Live Coding', 'Arter'],
+];
+
+const releases = [
+  ['Complex Forms of Being', 'https://keremaltaylar.bandcamp.com/album/complex-forms-of-being'],
+  ['Symbiosis', 'https://keremaltaylar.bandcamp.com/album/symbiosis'],
+  ['Sonitus Aernitatis', 'https://keremaltaylar.bandcamp.com/album/sonitus-aernitatis'],
+];
+
+const sections: [string, string[][]][] = [
+  ['Education', education],
+  ['Residencies', residencies],
+  ['Selected performances', performances],
+  ['Seminars & workshops', teaching],
+];
+---
+
+<Base
+  title="CV"
+  description="Curriculum vitae of Kerem Altaylar — education, residencies, performances, seminars and releases."
+  quiet
+>
+  <div class="wrap cv">
+    <header class="page-head rise">
+      <p class="eyebrow">Curriculum Vitae</p>
+      <h1>Kerem Altaylar</h1>
+      <p class="sub meta">Sound artist, researcher &amp; performer · Istanbul</p>
+    </header>
+
+    {
+      sections.map(([heading, rows]) => (
+        <section>
+          <h2>{heading}</h2>
+          <ul class="entries">
+            {rows.map(([when, what, where]) => (
+              <li>
+                <span class="when meta">{when}</span>
+                <span class="what">
+                  {what}
+                  {where && <span class="where">{where}</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <section>
+      <h2>Releases</h2>
+      <ul class="entries">
+        {
+          releases.map(([title, url]) => (
+            <li>
+              <span class="when meta">Bandcamp</span>
+              <span class="what">
+                <a href={url} rel="noopener">{title}</a>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1rem, 3vw, 2rem);
+  }
+  .page-head h1 {
+    margin-block: 0.6rem 0.8rem;
+  }
+  .sub {
+    text-transform: none;
+    letter-spacing: 0.1em;
+  }
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-block: clamp(2.5rem, 6vw, 4rem) 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--bdr);
+  }
+
+  .entries {
+    list-style: none;
+  }
+  .entries li {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--bdr);
+  }
+  .when {
+    padding-top: 0.35rem;
+  }
+  .what {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .where {
+    color: var(--dim);
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 700px) {
+    .entries li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

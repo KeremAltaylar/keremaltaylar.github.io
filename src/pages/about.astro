@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site';
+---
+
+<Base title="About" description={SITE.description} quiet>
+  <div class="wrap about">
+    <header class="page-head rise">
+      <p class="eyebrow">About</p>
+      <h1>Kerem Altaylar</h1>
+    </header>
+
+    <div class="grid">
+      <div class="prose">
+        <p class="lede">
+          Kerem Altaylar is a sound artist, researcher and performer working with
+          generative systems, live electronics, creative coding and immersive audio.
+          His practice blends technology, science and philosophy to craft evolving
+          soundscapes and abstract sonic narratives.
+        </p>
+
+        <p>
+          He works with live coding, digital instrument design, drumming, generative
+          music and audio programming, and with the intersection between generative
+          systems and rule-based improvisation. His research focuses on
+          biomultisensographies and transductional sonic ecologies — in particular
+          <strong>microsoundscapes</strong>, sonic environments too quiet, too small
+          or too slow to register under ordinary listening conditions.
+        </p>
+
+        <p>
+          He performs live electronics and live coding at venues and festivals across
+          Istanbul and beyond, working at the fringes of real-time composition. He is
+          currently a PhD candidate in Sonic Arts at Istanbul Technical University's
+          MIAM (Center for Advanced Studies in Music).
+        </p>
+
+        <h2>Research focus</h2>
+        <ul>
+          <li>Sonic ecologies and microsoundscapes</li>
+          <li>Spatial and multichannel audio composition</li>
+          <li>Generative systems and artificial life</li>
+          <li>Bioacoustics and multi-sensory data collection</li>
+          <li>Human–computer interaction in creative contexts</li>
+        </ul>
+      </div>
+
+      <aside class="contact">
+        <h3>Contact</h3>
+        <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+
+        <h3>Follow</h3>
+        <ul class="links">
+          {SITE.follow.map((l) => (
+            <li><a href={l.href} rel="me noopener">{l.label} →</a></li>
+          ))}
+        </ul>
+
+        <h3>Also</h3>
+        <ul class="links">
+          <li><a href="https://www.fxhash.xyz/u/Kerem%20Altaylar" rel="noopener">fxhash →</a></li>
+          <li><a href="https://extremophile.bandcamp.com" rel="noopener">Extremophile →</a></li>
+        </ul>
+
+        <p class="cv-link"><a href="/cv/">Full CV →</a></p>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .page-head h1 {
+    margin-top: 0.6rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 16rem;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .lede {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  .contact {
+    border-top: 1px solid var(--bdr);
+    padding-top: 1.2rem;
+    position: sticky;
+    top: 6rem;
+  }
+  .contact h3 {
+    margin-block: 1.8rem 0.7rem;
+  }
+  .contact h3:first-child {
+    margin-top: 0;
+  }
+  .contact p,
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+  }
+  .links {
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .links a {
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+  }
+  .cv-link {
+    margin-top: 2.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--bdr);
+  }
+  .cv-link a {
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .contact {
+      position: static;
+    }
+  }
+</style>
