@@ -1,0 +1,182 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import WorkRow from '../../components/WorkRow.astro';
+import Gallery from '../../components/Gallery.astro';
+import { LIVE_CODING } from '../../data/galleries';
+
+const all = await getCollection('works', ({ data }) => data.status === 'published');
+type Work = (typeof all)[number];
+const byDate = (a: Work, b: Work) => b.data.year - a.data.year || a.data.order - b.data.order;
+
+const pieces = all.filter((w) => w.data.type !== 'film' && w.data.type !== 'installation').sort(byDate);
+const installations = all.filter((w) => w.data.type === 'installation').sort(byDate);
+const film = all.filter((w) => w.data.type === 'film').sort(byDate);
+
+const releases = await getCollection('releases');
+---
+
+<Base
+  title="Music & Sound"
+  description="Compositions, installations, releases, film music and live coding by sound artist Kerem Altaylar — multichannel and spatial work built from microsoundscapes and generative systems."
+>
+  <div class="wrap">
+    <header class="page-head rise">
+      <p class="eyebrow">Music &amp; Sound</p>
+      <h1>Compositions, installations &amp; performance</h1>
+      <p class="lede">
+        Spatial and multichannel work built from recordings of things too quiet, too
+        small or too slow to hear — alongside releases, film music and the live-coded
+        practice that runs beside them.
+      </p>
+    </header>
+
+    <nav class="jump" aria-label="Sections">
+      <a href="#works">Works</a>
+      {installations.length > 0 && <a href="#installations">Installations</a>}
+      <a href="#live-coding">Live coding</a>
+      <a href="#releases">Releases</a>
+      {film.length > 0 && <a href="#film">Film music</a>}
+    </nav>
+
+    <section id="works" aria-labelledby="works-h">
+      <h2 id="works-h" class="section-title">Works</h2>
+      {pieces.map((work, i) => <WorkRow work={work} index={i} />)}
+      {pieces.length === 0 && <p class="meta">No published works yet.</p>}
+    </section>
+
+    {
+      installations.length > 0 && (
+        <section id="installations" aria-labelledby="installations-h">
+          <h2 id="installations-h" class="section-title">Installations</h2>
+          {installations.map((work, i) => (
+            <WorkRow work={work} index={i} />
+          ))}
+        </section>
+      )
+    }
+
+    <section id="live-coding" aria-labelledby="live-coding-h">
+      <h2 id="live-coding-h" class="section-title">Live coding</h2>
+      <div class="prose intro">
+        <p>
+          Sound and image written from scratch in front of an audience, the source
+          projected as it is edited so the piece and its construction stay visible at
+          once. The material is rule-based rather than improvised note by note: a
+          system is set running, and the performance is the negotiation with it.
+        </p>
+        <p>
+          Performed with Algorave Istanbul and solo at Sónar İstanbul, Generate
+          İstanbul (Babylon), Alan Kadıköy and Gazhane, among others.
+        </p>
+      </div>
+      <Gallery photos={LIVE_CODING} />
+    </section>
+
+    <section id="releases" aria-labelledby="releases-h">
+      <h2 id="releases-h" class="section-title">Releases</h2>
+      <ul class="releases">
+        {
+          releases.map((r) => (
+            <li>
+              <a href={r.data.url} rel="noopener">
+                <span class="rel-title">{r.data.title}</span>
+                <span class="meta rel-meta">
+                  {[r.data.label ?? 'Bandcamp', r.data.year].filter(Boolean).join(' · ')}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {
+      film.length > 0 && (
+        <section id="film" aria-labelledby="film-h">
+          <h2 id="film-h" class="section-title">Film music</h2>
+          {film.map((work, i) => (
+            <WorkRow work={work} index={i} />
+          ))}
+        </section>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1rem, 3vw, 2rem);
+    max-width: 46rem;
+  }
+  .page-head h1 {
+    margin-block: 0.6rem 1rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    opacity: 0.85;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid var(--bdr);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .jump a {
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .jump a:hover {
+    color: var(--accent);
+  }
+
+  section {
+    padding-top: clamp(2.5rem, 7vw, 5rem);
+    scroll-margin-top: 6rem;
+  }
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.6rem;
+  }
+  .intro {
+    max-width: var(--measure);
+    margin-bottom: clamp(1.6rem, 4vw, 2.5rem);
+    opacity: 0.85;
+  }
+
+  .releases {
+    list-style: none;
+    border-top: 1px solid var(--bdr);
+  }
+  .releases a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem 1.5rem;
+    padding-block: 1.2rem;
+    border-bottom: 1px solid var(--bdr);
+    text-decoration: none;
+  }
+  .rel-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    transition: color 0.4s ease;
+  }
+  .releases a:hover .rel-title {
+    color: var(--accent);
+  }
+  .rel-meta {
+    text-transform: none;
+  }
+</style>

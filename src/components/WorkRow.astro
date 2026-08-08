@@ -13,7 +13,7 @@ const meta = [d.format, d.duration, String(d.year)].filter(Boolean).join(' · ')
 ---
 
 <article class={`row ${index % 2 === 1 ? 'flip' : ''}`}>
-  <a href={`/works/${work.id}/`} class="thumb">
+  <a href={`/music/${work.id}/`} class="thumb">
     {
       d.cover ? (
         <Image src={d.cover} alt={d.coverAlt ?? ''} widths={[420, 760, 1100]} sizes="(max-width: 800px) 100vw, 55vw" />
@@ -27,10 +27,10 @@ const meta = [d.format, d.duration, String(d.year)].filter(Boolean).join(' · ')
 
   <div class="body">
     <p class="meta">{meta}</p>
-    <h2><a href={`/works/${work.id}/`}>{d.title}</a></h2>
+    <h2><a href={`/music/${work.id}/`}>{d.title}</a></h2>
     {d.venue && <p class="venue meta">{d.venue}</p>}
     <p class="summary">{d.summary}</p>
-    <a href={`/works/${work.id}/`} class="more">Read →</a>
+    <a href={`/music/${work.id}/`} class="more">Read →</a>
   </div>
 </article>
 

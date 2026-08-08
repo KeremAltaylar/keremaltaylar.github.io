@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const instruments = (await getCollection('interactive', ({ data }) => data.kind === 'instrument')).sort(
+  (a, b) => (b.data.year ?? 0) - (a.data.year ?? 0)
+);
+---
+
+<Base
+  title="Digital Instruments"
+  description="Playable browser instruments by Kerem Altaylar — microtonal maqam synthesis, gesture sonification, monophonic synthesis and step sequencing, all running in the browser."
+>
+  <div class="wrap">
+    <header class="page-head rise">
+      <p class="eyebrow">Digital Instruments</p>
+      <h1>Instruments you can play in the browser</h1>
+      <p class="lede">
+        Every instrument below runs in this tab — no install, no plugin. They are
+        built with the Web Audio API and designed to be played, not demonstrated.
+        Headphones or speakers recommended.
+      </p>
+    </header>
+
+    <ul class="inst-grid">
+      {
+        instruments.map((e) => (
+          <li class="card">
+            <div class="card-top">
+              <h2 class="card-title">{e.data.title}</h2>
+              {e.data.year && <span class="meta">{e.data.year}</span>}
+            </div>
+            {e.data.blurb && <p class="blurb">{e.data.blurb}</p>}
+            {e.data.tech.length > 0 && (
+              <ul class="tech">
+                {e.data.tech.map((t) => (
+                  <li class="meta">{t}</li>
+                ))}
+              </ul>
+            )}
+            <p class="actions">
+              <a class="play" href={e.data.url} rel="noopener">
+                Play in browser →
+              </a>
+              {e.data.repo && (
+                <a class="src" href={e.data.repo} rel="noopener">
+                  Source
+                </a>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="aside meta">
+      Instruments are built alongside the compositions that need them — see
+      <a href="/music/">Music &amp; Sound</a> for the pieces, and
+      <a href="/digital-art/">Digital Art</a> for the generative work.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(2rem, 5vw, 3.5rem);
+    max-width: 46rem;
+  }
+  .page-head h1 {
+    margin-block: 0.6rem 1rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    opacity: 0.85;
+  }
+
+  .inst-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: 1px;
+    background: var(--bdr);
+    border: 1px solid var(--bdr);
+  }
+  .card {
+    background: var(--bg);
+    padding: clamp(1.4rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    transition: background 0.5s ease;
+  }
+  .card:hover {
+    background: var(--bg-raised);
+  }
+  .card-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink);
+  }
+  .blurb {
+    margin-top: 0.7rem;
+    opacity: 0.8;
+    font-size: 0.98rem;
+    flex: 1;
+  }
+  .tech {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .tech li {
+    border: 1px solid var(--bdr);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.6rem;
+  }
+  .actions {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1.4rem;
+  }
+  .play {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .src {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .aside {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    text-transform: none;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+  }
+</style>

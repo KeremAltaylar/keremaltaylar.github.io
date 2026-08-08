@@ -11,7 +11,7 @@ const works = defineCollection({
     z.object({
       title: z.string(),
       year: z.number().int().min(1990).max(2100),
-      type: z.enum(['composition', 'performance', 'installation', 'research']),
+      type: z.enum(['composition', 'performance', 'installation', 'research', 'film']),
       /** Channel format or medium, e.g. "8.1.4", "Stereo", "Live electronics" */
       format: z.string().optional(),
       duration: z.string().optional(),
@@ -79,4 +79,17 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { works, interactive, field, events };
+/** Albums and EPs, newest first. */
+const releases = defineCollection({
+  loader: file('./src/content/releases.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    year: z.number().int().optional(),
+    label: z.string().optional(),
+    blurb: z.string().optional(),
+    url: z.string().url(),
+  }),
+});
+
+export const collections = { works, interactive, field, events, releases };

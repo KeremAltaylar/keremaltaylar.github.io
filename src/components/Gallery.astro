@@ -1,0 +1,85 @@
+---
+/**
+ * Photo grid. The first image is given double width so a set reads as one
+ * lead image plus supporting frames rather than a uniform contact sheet.
+ */
+import { Image } from 'astro:assets';
+import type { Photo } from '../data/galleries';
+
+interface Props {
+  photos: Photo[];
+  /** Give the opening frame the full row. */
+  lead?: boolean;
+}
+
+const { photos, lead = true } = Astro.props;
+---
+
+<ul class:list={['gallery', { lead }]}>
+  {
+    photos.map((p) => (
+      <li>
+        <figure>
+          <Image
+            src={p.src}
+            alt={p.alt}
+            widths={[420, 780, 1200]}
+            sizes="(max-width: 700px) 100vw, 33vw"
+            loading="lazy"
+          />
+          {p.caption && <figcaption class="meta">{p.caption}</figcaption>}
+        </figure>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .gallery {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: clamp(0.6rem, 1.5vw, 1.1rem);
+  }
+  /* The opening frame takes a 2x2 block so a set reads as one lead image with
+     supporting frames rather than a uniform contact sheet. */
+  .gallery.lead > li:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .gallery.lead > li:first-child :global(img) {
+    aspect-ratio: 4 / 3;
+  }
+
+  figure {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .gallery :global(img) {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 4 / 3;
+    filter: brightness(0.9) saturate(0.92);
+    transition: filter 0.6s var(--ease);
+  }
+  figure:hover :global(img) {
+    filter: none;
+  }
+
+  figcaption {
+    padding-top: 0.55rem;
+    letter-spacing: 0.14em;
+    font-size: 0.62rem;
+  }
+
+  @media (max-width: 560px) {
+    .gallery.lead > li:first-child {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+</style>

@@ -18,10 +18,13 @@ export const SITE = {
   ],
 } as const;
 
+/* Field Log is intentionally absent — the route exists but stays out of the
+   header until there are entries to read. */
 export const NAV = [
-  { label: 'Works', href: '/works/' },
-  { label: 'Interactive', href: '/interactive/' },
-  { label: 'Field Log', href: '/field/' },
+  { label: 'Music & Sound', href: '/music/' },
+  { label: 'Digital Instruments', href: '/instruments/' },
+  { label: 'Digital Art', href: '/digital-art/' },
+  { label: 'Performances', href: '/performances/' },
   { label: 'CV', href: '/cv/' },
   { label: 'About', href: '/about/' },
 ] as const;

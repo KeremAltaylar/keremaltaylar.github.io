@@ -8,6 +8,8 @@ summary: "A DIY formicarium fitted with contact microphones, used as both resear
 featured: true
 status: published
 order: 2
+cover: ./cover.jpg
+coverAlt: "A white nesting box holding two piezo discs pressed against moss and substrate, wired out to a recording chain."
 credits: []
 links: {}
 ---

@@ -1,0 +1,171 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Gallery from '../components/Gallery.astro';
+import { CIRCUS } from '../data/galleries';
+
+const generative = (await getCollection('interactive', ({ data }) => data.kind === 'generative')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+---
+
+<Base
+  title="Digital Art"
+  description="Generative and interactive visual work by Kerem Altaylar — browser-based generative systems, real-time interactive visuals and video mapping design for stage."
+>
+  <div class="wrap">
+    <header class="page-head rise">
+      <p class="eyebrow">Digital Art</p>
+      <h1>Generative systems &amp; projected image</h1>
+      <p class="lede">
+        Visual work made the same way as the sound: a process is written, set running,
+        and left to produce rather than a picture being drawn. Some of it runs in a
+        browser tab; some of it is thrown across a stage.
+      </p>
+    </header>
+
+    <nav class="jump" aria-label="Sections">
+      <a href="#mapping">Video mapping</a>
+      <a href="#interactive">Interactive visuals</a>
+    </nav>
+
+    <section id="mapping" aria-labelledby="mapping-h">
+      <h2 id="mapping-h" class="section-title">Video mapping — Circus of Freaks</h2>
+      <div class="prose intro">
+        <p>
+          Projection design for <em>Circus of Freaks</em>, mapped onto a performer and
+          onto the wide fabric wings she opens and folds through the piece. Because the
+          surface moves, the image cannot be treated as a flat screen: the generative
+          texture is warped to the geometry of the costume so that foliage, water and
+          decay stretch and gather with the body rather than sliding over it.
+        </p>
+        <p>
+          The visual material is generated rather than filmed — the same organic
+          systems that drive the sound work, rendered at stage scale.
+        </p>
+      </div>
+      <Gallery photos={CIRCUS} />
+    </section>
+
+    <section id="interactive" aria-labelledby="interactive-h">
+      <h2 id="interactive-h" class="section-title">Interactive visuals</h2>
+      <p class="section-note">
+        {generative.length} browser-based generative systems. Each one is a running
+        process rather than a fixed image — reload and it will not repeat itself.
+      </p>
+      <ul class="gen-grid">
+        {
+          generative.map((e) => (
+            <li>
+              <a href={e.data.url} rel="noopener">
+                <span class="gen-title">{e.data.title}</span>
+                <span class="meta gen-open">Open →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="aside meta">
+        Editions of some of these pieces are minted on
+        <a href="https://www.fxhash.xyz/u/Kerem%20Altaylar" rel="noopener">fxhash</a>.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(3rem, 9vw, 6rem) clamp(1rem, 3vw, 2rem);
+    max-width: 46rem;
+  }
+  .page-head h1 {
+    margin-block: 0.6rem 1rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    opacity: 0.85;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid var(--bdr);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .jump a {
+    color: var(--dim);
+    text-decoration: none;
+  }
+  .jump a:hover {
+    color: var(--accent);
+  }
+
+  section {
+    padding-top: clamp(2.5rem, 7vw, 5rem);
+    scroll-margin-top: 6rem;
+  }
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.6rem;
+  }
+  .intro {
+    max-width: var(--measure);
+    margin-bottom: clamp(1.6rem, 4vw, 2.5rem);
+    opacity: 0.85;
+  }
+  .section-note {
+    margin-top: -0.6rem;
+    margin-bottom: 1.8rem;
+    color: var(--dim);
+  }
+
+  .gen-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+    gap: 1px;
+    background: var(--bdr);
+    border: 1px solid var(--bdr);
+  }
+  .gen-grid a {
+    background: var(--bg);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 1.1rem 1.2rem;
+    text-decoration: none;
+    transition: background 0.4s ease;
+  }
+  .gen-grid a:hover {
+    background: var(--bg-raised);
+  }
+  .gen-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+  }
+  .gen-open {
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .gen-grid a:hover .gen-open {
+    opacity: 1;
+  }
+
+  .aside {
+    margin-top: 1.6rem;
+    text-transform: none;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+  }
+</style>

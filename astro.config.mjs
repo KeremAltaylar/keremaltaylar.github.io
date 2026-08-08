@@ -6,5 +6,10 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://keremaltaylar.github.io',
   trailingSlash: 'always',
+  redirects: {
+    '/works/': '/music/',
+    '/works/[...slug]': '/music/[...slug]',
+    '/interactive/': '/instruments/',
+  },
   integrations: [sitemap()],
 });
