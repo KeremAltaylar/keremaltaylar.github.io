@@ -2,15 +2,18 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Gallery from '../components/Gallery.astro';
-import { PERFORMANCE_PHOTOS } from '../data/galleries';
+import { PERFORMANCE_PHOTOS, LIVE_CODING } from '../data/galleries';
 
-/** Kept here rather than in a collection: it is a flat list that only ever grows. */
-const past: [string, string, string][] = [
-  ['2025', 'Inside the Tribe', 'Sonic Provocations, Sonified III, Arter, Istanbul'],
-  ['2025', 'Colony', 'Podium für MIAM, Hochschule für Musik, Hannover'],
-  ['2024', 'Hammers of the Bruenor', 'Sonified II, Istanbul'],
+/** Kept here rather than in a collection: it is a flat list that only ever grows.
+    The fourth entry links to the piece's page where one exists. */
+const past: [string, string, string, string?][] = [
+  ['2025', 'Inside the Tribe', 'Sonic Provocations, Sonified III, Arter, Istanbul', '/music/inside-the-tribe/'],
+  ['2025', 'Colony', 'Podium für MIAM, Hochschule für Musik, Theater und Medien Hannover', '/music/the-colony/'],
+  ['2024', 'Hammers of the Bruenor', 'Sonified II, Arter, Istanbul', '/music/hammers-of-the-bruenor/'],
+  ['2023', 'Solo live coding', 'Sónar İstanbul'],
+  ['2022', 'Solo live coding', 'Generate İstanbul, Babylon'],
+  ['2022', 'Solo live coding', 'Gazhane Museum, Istanbul'],
   ['2021', 'Decentralisation of Homo Heidelbergensis', 'MIAM Gallery, Istanbul'],
-  ['2020–present', 'Solo live coding', 'Sónar İstanbul · Generate İstanbul, Babylon · Alan Kadıköy · Gazhane · Algorave Istanbul'],
   ['2018–present', 'Y Negative & Pembe', 'Babylon · Gazhane Museum · Blind Istanbul'],
 ];
 
@@ -69,17 +72,30 @@ const upcoming = (await getCollection('events'))
       <h2 id="past-h" class="section-title">Selected performances</h2>
       <ul class="entries">
         {
-          past.map(([when, what, where]) => (
+          past.map(([when, what, where, href]) => (
             <li>
               <span class="when meta">{when}</span>
               <span class="what">
-                {what}
+                {href ? <a href={href}>{what}</a> : what}
                 <span class="where">{where}</span>
               </span>
             </li>
           ))
         }
       </ul>
+    </section>
+
+    <section aria-labelledby="live-coding-h">
+      <h2 id="live-coding-h" class="section-title">Live coding</h2>
+      <div class="prose intro">
+        <p>
+          Sound and image written from scratch in front of an audience, the source
+          projected as it is edited so the piece and its construction stay visible at
+          once. The material is rule-based rather than improvised note by note: a
+          system is set running, and the performance is the negotiation with it.
+        </p>
+      </div>
+      <Gallery photos={LIVE_CODING} />
       <p class="aside meta">
         Full history, teaching and residencies on the <a href="/cv/">CV</a>. For booking,
         write to <a href="mailto:keremaltaylar@gmail.com">keremaltaylar@gmail.com</a>.
@@ -137,6 +153,19 @@ const upcoming = (await getCollection('events'))
     color: var(--dim);
     font-family: var(--font-body);
     font-size: 0.9rem;
+  }
+
+  .intro {
+    max-width: var(--measure);
+    margin-bottom: clamp(1.2rem, 3vw, 2rem);
+    opacity: 0.85;
+  }
+  .what a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--bdr);
+  }
+  .what a:hover {
+    color: var(--accent);
   }
 
   .aside {

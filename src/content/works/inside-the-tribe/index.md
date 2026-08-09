@@ -1,7 +1,7 @@
 ---
 title: "Inside the Tribe"
 year: 2025
-type: performance
+type: composition
 format: "8.1.4"
 duration: "8:00"
 venue: "Sonic Provocations, Sonified III, Arter, Istanbul"
@@ -25,8 +25,13 @@ _Inside the Tribe_ depicts a metaphysical war between ancient microorganisms and
 Homo sapiens faith system. It employs generative acousmatic sound transformers based
 on sound objects, specifically prepared and composed into an immersive octophonic
 (8-channel surround speaker array) sonic image. These transformers are generative
-patches created for this performance — an artificial life form that evolves in real
+patches created for the piece — an artificial life form that evolves in real
 time.
+
+The sound objects it works from are field recordings: microphones pushed into
+bark, soil and cavities, close enough that the recording is of a surface rather
+than a place. Those recordings are the whole palette — everything heard in the
+piece is a transformation of them, composed to a fixed multichannel image.
 
 And remember: Entropy reigns not only in nature and space/time but accelerates wildly
 within virtual worlds built upon circuits.

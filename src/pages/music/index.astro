@@ -2,87 +2,55 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import WorkRow from '../../components/WorkRow.astro';
-import Gallery from '../../components/Gallery.astro';
-import { LIVE_CODING } from '../../data/galleries';
 
 const all = await getCollection('works', ({ data }) => data.status === 'published');
 type Work = (typeof all)[number];
 const byDate = (a: Work, b: Work) => b.data.year - a.data.year || a.data.order - b.data.order;
 
-const pieces = all.filter((w) => w.data.type !== 'film' && w.data.type !== 'installation').sort(byDate);
-const installations = all.filter((w) => w.data.type === 'installation').sort(byDate);
-const film = all.filter((w) => w.data.type === 'film').sort(byDate);
+/* Compositions are the spatial pieces. Anything typed `performance` lives on the
+   performances page instead, though its detail page is still built and linked. */
+const spatial = all.filter((w) => w.data.type === 'composition').sort(byDate);
 
-const releases = await getCollection('releases');
+/* The loader does not preserve file order, so sort explicitly. Anything without a
+   year is the newest thing he has put out and sits at the top. */
+const releases = (await getCollection('releases')).sort(
+  (a, b) => (b.data.year ?? Infinity) - (a.data.year ?? Infinity)
+);
+const scoring = (await getCollection('scoring')).sort((a, b) => b.data.year - a.data.year);
 ---
 
 <Base
   title="Music & Sound"
-  description="Compositions, installations, releases, film music and live coding by sound artist Kerem Altaylar — multichannel and spatial work built from microsoundscapes and generative systems."
+  description="Music by sound artist Kerem Altaylar — albums, spatial multichannel compositions built from field recordings, and music written for theatre, dance and film."
 >
   <div class="wrap">
     <header class="page-head rise">
       <p class="eyebrow">Music &amp; Sound</p>
-      <h1>Compositions, installations &amp; performance</h1>
+      <h1>Releases &amp; compositions</h1>
       <p class="lede">
-        Spatial and multichannel work built from recordings of things too quiet, too
-        small or too slow to hear — alongside releases, film music and the live-coded
-        practice that runs beside them.
+        Albums, spatial work built from recordings of things too quiet, too small or too
+        slow to hear, and music written for other people's stages and screens.
       </p>
     </header>
 
     <nav class="jump" aria-label="Sections">
-      <a href="#works">Works</a>
-      {installations.length > 0 && <a href="#installations">Installations</a>}
-      <a href="#live-coding">Live coding</a>
       <a href="#releases">Releases</a>
-      {film.length > 0 && <a href="#film">Film music</a>}
+      <a href="#spatial">Spatial compositions</a>
+      <a href="#scoring">Stage &amp; screen</a>
     </nav>
-
-    <section id="works" aria-labelledby="works-h">
-      <h2 id="works-h" class="section-title">Works</h2>
-      {pieces.map((work, i) => <WorkRow work={work} index={i} />)}
-      {pieces.length === 0 && <p class="meta">No published works yet.</p>}
-    </section>
-
-    {
-      installations.length > 0 && (
-        <section id="installations" aria-labelledby="installations-h">
-          <h2 id="installations-h" class="section-title">Installations</h2>
-          {installations.map((work, i) => (
-            <WorkRow work={work} index={i} />
-          ))}
-        </section>
-      )
-    }
-
-    <section id="live-coding" aria-labelledby="live-coding-h">
-      <h2 id="live-coding-h" class="section-title">Live coding</h2>
-      <div class="prose intro">
-        <p>
-          Sound and image written from scratch in front of an audience, the source
-          projected as it is edited so the piece and its construction stay visible at
-          once. The material is rule-based rather than improvised note by note: a
-          system is set running, and the performance is the negotiation with it.
-        </p>
-        <p>
-          Performed with Algorave Istanbul and solo at Sónar İstanbul, Generate
-          İstanbul (Babylon), Alan Kadıköy and Gazhane, among others.
-        </p>
-      </div>
-      <Gallery photos={LIVE_CODING} />
-    </section>
 
     <section id="releases" aria-labelledby="releases-h">
       <h2 id="releases-h" class="section-title">Releases</h2>
-      <ul class="releases">
+      <ul class="listing">
         {
           releases.map((r) => (
             <li>
               <a href={r.data.url} rel="noopener">
-                <span class="rel-title">{r.data.title}</span>
-                <span class="meta rel-meta">
-                  {[r.data.label ?? 'Bandcamp', r.data.year].filter(Boolean).join(' · ')}
+                <span class="line-title">{r.data.title}</span>
+                <span class="tags">
+                  <span class="tag">Album</span>
+                  {r.data.year && <span class="meta">{r.data.year}</span>}
+                  <span class="meta">{r.data.label ?? 'Bandcamp'}</span>
                 </span>
               </a>
             </li>
@@ -91,16 +59,52 @@ const releases = await getCollection('releases');
       </ul>
     </section>
 
-    {
-      film.length > 0 && (
-        <section id="film" aria-labelledby="film-h">
-          <h2 id="film-h" class="section-title">Film music</h2>
-          {film.map((work, i) => (
-            <WorkRow work={work} index={i} />
-          ))}
-        </section>
-      )
-    }
+    <section id="spatial" aria-labelledby="spatial-h">
+      <h2 id="spatial-h" class="section-title">Spatial compositions</h2>
+      <div class="prose intro">
+        <p>
+          Multichannel pieces that begin with a microphone somewhere it does not
+          normally go — inside bark, against soil, pressed to the wall of an ant
+          habitat. The recordings are the whole palette; the work is what happens to
+          them afterwards, composed into a fixed image for an array of speakers so the
+          audience sits inside the material rather than in front of it.
+        </p>
+      </div>
+      {spatial.map((work, i) => <WorkRow work={work} index={i} />)}
+    </section>
+
+    <section id="scoring" aria-labelledby="scoring-h">
+      <h2 id="scoring-h" class="section-title">Music for stage &amp; screen</h2>
+      <ul class="listing">
+        {
+          scoring.map((s) => {
+            const line = (
+              <>
+                <span class="line-title">{s.data.title}</span>
+                <span class="tags">
+                  <span class="tag">{s.data.medium}</span>
+                  <span class="meta">{s.data.year}</span>
+                  {s.data.context && <span class="meta">{s.data.context}</span>}
+                </span>
+                <span class="role meta">{s.data.role}</span>
+                {s.data.blurb && <p class="blurb">{s.data.blurb}</p>}
+              </>
+            );
+            return (
+              <li>
+                {s.data.url ? (
+                  <a href={s.data.url} rel="noopener">
+                    {line}
+                  </a>
+                ) : (
+                  <div class="static">{line}</div>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
   </div>
 </Base>
 
@@ -150,33 +154,62 @@ const releases = await getCollection('releases');
   }
   .intro {
     max-width: var(--measure);
-    margin-bottom: clamp(1.6rem, 4vw, 2.5rem);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
     opacity: 0.85;
   }
 
-  .releases {
+  /* Releases and scoring share one row style so the page reads as one register. */
+  .listing {
     list-style: none;
     border-top: 1px solid var(--bdr);
   }
-  .releases a {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.6rem 1.5rem;
-    padding-block: 1.2rem;
+  .listing a,
+  .listing .static {
+    display: block;
+    padding-block: 1.4rem;
     border-bottom: 1px solid var(--bdr);
     text-decoration: none;
   }
-  .rel-title {
+  .line-title {
+    display: block;
     font-family: var(--font-display);
     font-size: clamp(1.4rem, 3vw, 2rem);
     transition: color 0.4s ease;
   }
-  .releases a:hover .rel-title {
+  .listing a:hover .line-title {
     color: var(--accent);
   }
-  .rel-meta {
+
+  /* The tag names the kind of thing this is; the rest of the row dates and places it. */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem 0.9rem;
+    margin-top: 0.5rem;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--bdr);
+    border-radius: 999px;
+    padding: 0.25rem 0.6rem;
+  }
+  .tags .meta {
     text-transform: none;
+  }
+  .role {
+    display: block;
+    margin-top: 0.5rem;
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+  .blurb {
+    max-width: var(--measure);
+    margin-top: 0.6rem;
+    opacity: 0.8;
   }
 </style>

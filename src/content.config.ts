@@ -92,4 +92,20 @@ const releases = defineCollection({
   }),
 });
 
-export const collections = { works, interactive, field, events, releases };
+/** Music written for someone else's work — film, theatre, dance. */
+const scoring = defineCollection({
+  loader: file('./src/content/scoring.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    year: z.number().int(),
+    /** Shown as the tag: "Film", "Theatre", "Dance". */
+    medium: z.string(),
+    role: z.string(),
+    context: z.string().optional(),
+    blurb: z.string().optional(),
+    url: z.string().url().optional(),
+  }),
+});
+
+export const collections = { works, interactive, field, events, releases, scoring };

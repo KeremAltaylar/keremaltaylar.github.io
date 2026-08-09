@@ -1,7 +1,7 @@
 ---
 title: "Hammers of the Bruenor"
 year: 2024
-type: composition
+type: performance
 format: "Mixed electroacoustic — saxophone, cymbal, electronics"
 duration: "5–7 min"
 venue: "Sonified II, Istanbul"

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "silent-bonds",
+    "title": "Silent Bonds",
+    "year": 2024,
+    "medium": "Dance",
+    "role": "Sound design & music",
+    "context": "MAD Gallery, Lisbon",
+    "blurb": "Score for a contemporary dance performance by Dicle Doğan and Iro — a quiet, close-miked sound world built to sit against the body rather than under it."
+  },
+  {
+    "id": "circus-of-freaks",
+    "title": "Circus of Freaks",
+    "year": 2023,
+    "medium": "Theatre",
+    "role": "Sound design, music & video mapping",
+    "context": "SALT Galata, Istanbul",
+    "blurb": "A contemporary theatre performance created by Şule Ateş. Music and sound design for the piece, alongside the projection design mapped onto the performer."
+  },
+  {
+    "id": "cezanin-csi",
+    "title": "Ceza'nın C'si",
+    "year": 2022,
+    "medium": "Short film",
+    "role": "Sound & music design",
+    "context": ""
+  },
+  {
+    "id": "gorgo",
+    "title": "Gorgo",
+    "year": 2022,
+    "medium": "Short film",
+    "role": "Music",
+    "context": ""
+  }
+]
