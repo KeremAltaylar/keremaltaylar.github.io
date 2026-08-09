@@ -7,11 +7,10 @@ import { PERFORMANCE_PHOTOS } from '../data/galleries';
 /** Kept here rather than in a collection: it is a flat list that only ever grows. */
 const past: [string, string, string][] = [
   ['2025', 'Inside the Tribe', 'Sonic Provocations, Sonified III, Arter, Istanbul'],
-  ['2025', 'Microsoundscapes and The Colony', 'Podium für MIAM, Hochschule für Musik, Hannover'],
+  ['2025', 'Colony', 'Podium für MIAM, Hochschule für Musik, Hannover'],
   ['2024', 'Hammers of the Bruenor', 'Sonified II, Istanbul'],
   ['2021', 'Decentralisation of Homo Heidelbergensis', 'MIAM Gallery, Istanbul'],
-  ['2021–present', 'Algorave Istanbul', 'Various venues'],
-  ['2020–present', 'Solo live coding', 'Sónar İstanbul · Generate İstanbul, Babylon · Alan Kadıköy · Gazhane'],
+  ['2020–present', 'Solo live coding', 'Sónar İstanbul · Generate İstanbul, Babylon · Alan Kadıköy · Gazhane · Algorave Istanbul'],
   ['2018–present', 'Y Negative & Pembe', 'Babylon · Gazhane Museum · Blind Istanbul'],
 ];
 
@@ -23,7 +22,7 @@ const upcoming = (await getCollection('events'))
 
 <Base
   title="Performances"
-  description="Live performances by Kerem Altaylar — multichannel diffusion, live electronics and live coding at Arter, Sónar İstanbul, Hochschule für Musik Hannover, Babylon and Algorave Istanbul."
+  description="Live performances by Kerem Altaylar — multichannel diffusion, live electronics and live coding at Arter, Sónar İstanbul, Hochschule für Musik Hannover and Babylon."
 >
   <div class="wrap">
     <header class="page-head rise">

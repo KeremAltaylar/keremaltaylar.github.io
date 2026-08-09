@@ -17,9 +17,6 @@ import circus5 from '../assets/img/circus-5.jpg';
 import colonyNest from '../assets/img/colony-nest.jpg';
 import colonyRig from '../assets/img/colony-rig.jpg';
 import colonyQueen from '../assets/img/colony-queen.jpg';
-import colonyTube from '../assets/img/colony-tube.jpg';
-import colonyBrood from '../assets/img/colony-brood.jpg';
-import colonyWorkers from '../assets/img/colony-workers.jpg';
 import colonyCluster from '../assets/img/colony-cluster.jpg';
 
 import tribePond from '../assets/img/tribe-pond.jpg';
@@ -89,10 +86,9 @@ export const COLONY: Photo[] = [
     alt: 'The recording desk: the formicarium, a portable recorder, a shotgun microphone on a stand and a preamp with headphones.',
     caption: 'The recording chain',
   },
+  /* Two frames of the colony itself is enough — the rest of the set was the
+     same tube shot over and over. */
   { src: colonyQueen, alt: 'A large black queen ant on cotton wool inside a glass tube.' },
-  { src: colonyTube, alt: 'Ants and brood gathered inside a glass test tube nest.' },
-  { src: colonyBrood, alt: 'Workers tending pale brood beside a dark ant in the tube.' },
-  { src: colonyWorkers, alt: 'Close view of workers clustered around a larger ant.' },
   { src: colonyCluster, alt: 'The colony clustered along the length of the tube.' },
 ];
 

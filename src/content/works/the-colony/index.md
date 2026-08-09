@@ -1,5 +1,5 @@
 ---
-title: "Microsoundscapes and The Colony"
+title: "Colony"
 year: 2025
 type: research
 format: "Quadraphonic"
@@ -14,7 +14,7 @@ credits: []
 links: {}
 ---
 
-_The Colony_ is an ongoing project built around a self-made formicarium — an ant
+_Colony_ is an ongoing project built around a self-made formicarium — an ant
 habitat fitted with contact microphones and piezo pickups, designed so that the
 colony's own movement becomes the sound source.
 

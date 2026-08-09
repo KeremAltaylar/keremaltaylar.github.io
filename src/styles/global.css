@@ -143,6 +143,28 @@ a:hover {
   margin-block: 0.35em;
 }
 
+/* Scores and diagrams are shown whole — never cropped or scaled up. */
+.prose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: 1.8em;
+  border: 1px solid var(--bdr);
+}
+
+.prose blockquote {
+  margin-block: 1.6em;
+  padding-left: clamp(1rem, 3vw, 1.8rem);
+  border-left: 1px solid var(--accent-soft);
+  max-width: var(--measure);
+  font-style: italic;
+  opacity: 0.88;
+}
+
+.prose blockquote p + p {
+  margin-top: 1em;
+}
+
 .rule {
   border: 0;
   border-top: 1px solid var(--bdr);

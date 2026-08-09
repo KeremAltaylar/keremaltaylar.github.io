@@ -134,14 +134,15 @@ const links = Object.entries(d.links).filter(([, v]) => Boolean(v)) as [string, 
   .cover {
     margin-bottom: clamp(2rem, 6vw, 4rem);
   }
-  /* Covers are a mix of portrait and landscape; cap the height so a tall
-     photograph does not push the text a full screen down. */
+  /* Covers are shown whole — no crop, no zoom — so the frame the photograph was
+     taken in survives. Width is capped instead of height for the same reason a
+     tall image would otherwise have to be cut. */
   .cover :global(img) {
     width: 100%;
     height: auto;
-    max-height: 68vh;
-    object-fit: cover;
     display: block;
+    margin-inline: auto;
+    max-width: 62rem;
   }
 
   .grid {
